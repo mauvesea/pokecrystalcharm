@@ -25,7 +25,7 @@ ItemDescriptions:
 	dw FireStoneDesc
 	dw ThunderStoneDesc
 	dw WaterStoneDesc
-	dw TeruSama2Desc
+	dw CatchCharmDesc
 	dw HPUpDesc
 	dw ProteinDesc
 	dw IronDesc
@@ -354,8 +354,9 @@ WaterStoneDesc:
 	db   "Evolves certain"
 	next "kinds of #MON.@"
 
-TeruSama2Desc:
-	db   "?@"
+CatchCharmDesc:
+	db   "Makes catching"
+	next "#MON easier.@"
 
 HPUpDesc:
 	db   "Raises the HP of"
