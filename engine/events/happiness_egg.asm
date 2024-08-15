@@ -193,6 +193,32 @@ DayCareStep::
 	dec [hl]
 	ret nz
 
+; The Oval Charm increases how likely it is for two Pokémon to
+; produce an egg.
+
+; In gen II, the chances for eggs to be produced were much lower, as follows:
+; Same species, different OT: 32% (70% in newer gens)
+; Same species, same OT: 16% (50% in newer gens)
+; Different species, different OT: 12% (50% in newer gens)
+; Different species, same OT: 4% (20% in newer gens)
+
+; Having the Oval Charm, the chances are increased as follows:
+; 70% -> 88% (~26% increase)
+; 50% -> 80% (60% increase)
+; 20% -> 40% (100% increase)
+
+; Those value will be adapted to gen II mechanics as follows:
+; 32% -> 40%
+; 16% -> 26%
+; 12% -> 19%
+; 4% -> 8%
+
+	ld a, OVAL_CHARM
+	ld [wCurItem], a
+	ld hl, wNumItems
+	call CheckItem
+	jr c, .OvalCharm
+
 	call Random
 	ld [hl], a
 	callfar CheckBreedmonCompatibility
@@ -209,6 +235,25 @@ DayCareStep::
 	ld b, 12 percent
 	jr nc, .okay
 	ld b, 4 percent
+	jr .okay
+
+.OvalCharm
+	call Random
+	ld [hl], a
+	callfar CheckBreedmonCompatibility
+	ld a, [wBreedingCompatibility]
+	cp 230
+	ld b, 40 percent
+	jr nc, .okay
+	ld a, [wBreedingCompatibility]
+	cp 170
+	ld b, 26 percent
+	jr nc, .okay
+	ld a, [wBreedingCompatibility]
+	cp 110
+	ld b, 19 percent
+	jr nc, .okay
+	ld b, 8 percent
 
 .okay
 	call Random
